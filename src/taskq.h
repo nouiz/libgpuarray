@@ -5,18 +5,16 @@
 #include <sys/queue.h>
 
 typedef struct _taskq taskq;
-typedef struct _event event;
+typedef struct _task task;
 
 taskq *taskq_create(void);
-void taskq_destroy(taskq *);
-int task_add(taskq *, void (*)(void *), void *);
-int task_event(taskq *, event *);
 void taskq_process(taskq *);
+void taskq_destroy(taskq *);
 
-event *event_create(void);
-void event_destroy(event *);
-int event_wait(event *);
-void event_post(event *, int);
-void event_reset(event *);
+task *task_create(int (*)(void *), void *);
+void task_add(taskq *, task *);
+void task_wait(task *);
+int task_res(task *);
+void task_destroy(task *);
 
 #endif
